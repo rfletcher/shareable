@@ -5,7 +5,7 @@
       if( $(d).find('#' + id).length != 0 ) return;
       js = $("<" + s + "/>", {
         'id':  id,
-        'src': "#{options[:edcast_base_location]}assets/widget/sdk.js",
+        'src': "<%= options[:server_location] %>assets/widget/sdk.js",
       })[0];
       firstJs.parentNode.insertBefore(js, firstJs);
       })(document, 'script', 'edcast-jssdk');

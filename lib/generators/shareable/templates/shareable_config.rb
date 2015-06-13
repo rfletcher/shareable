@@ -71,7 +71,7 @@ Shareable.configure do |config|
   ##############
   #edcast
   ##############
-  #config.edcast_base_location=''
+  #config.server_location=''
   #config.link=''
   #config.text='Share'
 end
