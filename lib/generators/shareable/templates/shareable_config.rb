@@ -69,7 +69,7 @@ Shareable.configure do |config|
   #config.dnt=''
 
   ##############
-  #twitter
+  #edcast
   ##############
   #config.edcast_base_location=''
   #config.link=''
