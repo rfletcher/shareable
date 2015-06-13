@@ -9,7 +9,7 @@ module Shareable
     class SocialButtons < Tag
       include ::ActionView::Context
       cattr_accessor :buttons
-      self.buttons = %w[ twitter facebook pinterest reddit google_plus linkedin ]
+      self.buttons = %w[ twitter facebook pinterest reddit google_plus linkedin edcast ]
 
       #not very DRY. Refactor.
       cattr_accessor :config_options
@@ -78,6 +78,7 @@ module Shareable
       end
 
       def each_relevant_button #:nodoc:
+        p "#{@options[:buttons]}=================="
         @options[:buttons].each do |button|
           yield button
         end
