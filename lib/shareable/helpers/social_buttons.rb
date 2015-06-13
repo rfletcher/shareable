@@ -79,7 +79,6 @@ module Shareable
       end
 
       def each_relevant_button #:nodoc:
-        p "#{@options[:buttons]}=================="
         @options[:buttons].each do |button|
           yield button
         end
