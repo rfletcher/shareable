@@ -1,0 +1,16 @@
+<%= output_once :edcast do %>
+  <script>
+    (function(d, s, id) {
+      var js, firstJs = $(d).find(s)[0];
+      if( $(d).find('#' + id).length != 0 ) return;
+      js = $("<" + s + "/>", {
+        'id':  id,
+        'src': "<%= options[:server_location] %>assets/widget/sdk.js",
+      })[0];
+      firstJs.parentNode.insertBefore(js, firstJs);
+      })(document, 'script', 'edcast-jssdk');
+  </script>
+<% end %>
+
+<div class="ed-share" <%= html_attributes(options.slice(:text, :link), data: true) %>>
+</div>

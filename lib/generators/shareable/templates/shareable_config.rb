@@ -67,4 +67,11 @@ Shareable.configure do |config|
   #config.hashtags=''
   #config.size='medium'
   #config.dnt=''
+
+  ##############
+  #edcast
+  ##############
+  #config.server_location=''
+  #config.link=''
+  #config.text='Share'
 end

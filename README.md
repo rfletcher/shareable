@@ -7,6 +7,7 @@ A simple and unobtrusive gem for adding social link sharing to your Rails app. S
   - Reddit
   - Linkedin
   - Google Plus
+  - EdCast
 
 Install
 --------
@@ -29,6 +30,7 @@ To add shareable in views use any of the following methods:
 + linkedin_button
 + reddit_button
 + google_plus_button
++ edcast_button
 
 For the easiest way to use shareable, add this helper method to your view:
 

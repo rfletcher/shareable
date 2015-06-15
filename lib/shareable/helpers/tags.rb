@@ -57,5 +57,8 @@ module Shareable
 
     class Twitter <  Socialize
     end
+
+    class Edcast <  Socialize
+    end
   end
 end
