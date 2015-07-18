@@ -9,7 +9,7 @@ module Shareable
     class SocialButtons < Tag
       include ::ActionView::Context
       cattr_accessor :buttons
-      self.buttons = %w[ twitter facebook pinterest reddit google_plus linkedin ]
+      self.buttons = %w[ twitter facebook pinterest reddit google_plus linkedin edcast ]
 
       #not very DRY. Refactor.
       cattr_accessor :config_options
@@ -19,7 +19,8 @@ module Shareable
       :linkedin => [ :counter, :onsuccess, :onerror, :showzero ],
       :pinterest => [ :pin_config, :pin_do, :title, :alt, :media, :description ],
       :reddit => [ :title, :target, :color, :bordercolor, :type, :styled, :newwindow, :btnsrc, :points ],
-      :twitter => [ :via, :text, :related, :count, :lang, :counturl, :hashtags, :size, :dnt ]}
+      :twitter => [ :via, :text, :related, :count, :lang, :counturl, :hashtags, :size, :dnt ],
+      :edcast => [ :edcast_base_location, :link, :text ]}
 
       def initialize(template, options) #:nodoc:
         @template, @options = template, options
@@ -49,22 +50,32 @@ module Shareable
       def to_s #:nodoc:
         #from Kamanari for handling log subscriber:
         subscriber = ActionView::LogSubscriber.log_subscribers.detect {|ls| ls.is_a? ActionView::LogSubscriber}
-        return super @options.merge :social_buttons => self unless subscriber
 
-        # dirty hack to suppress logging render_partial
-        class << subscriber
-          alias_method :render_partial_with_logging, :render_partial
-          # do nothing
-          def render_partial(event); end
+        # There is a logging subscriber
+        # and we don't want it to log render_partial
+        # It is threadsafe, but might not repress logging
+        # consistently in a high-load environment
+        if subscriber
+          unless defined? subscriber.render_partial_with_logging
+            class << subscriber
+              alias_method :render_partial_with_logging, :render_partial
+              attr_accessor :render_without_logging
+              # ugly hack to make a renderer where
+              # we can turn logging on or off
+              def render_partial(event)
+                render_partial_with_logging(event) unless render_without_logging
+              end
+            end
+          end
+
+          subscriber.render_without_logging = true
+          ret = super @options.merge :social_buttons => self
+          subscriber.render_without_logging = false
+
+          ret
+        else
+          super @options.merge :social_buttons => self
         end
-
-        ret = super @options.merge :social_buttons => self
-
-        class << subscriber
-          alias_method :render_partial, :render_partial_with_logging
-          undef :render_partial_with_logging
-        end
-        ret
       end
 
       def each_relevant_button #:nodoc:
